@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 12:42:25 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/01 12:48:30 by psalame          ###   ########.fr       */
+/*   Created: 2023/12/06 13:40:34 by psalame           #+#    #+#             */
+/*   Updated: 2023/12/06 13:56:46 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philosophers.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	t_list	*res;
-	void	*data;
+	void	*ptr;
 
-	if (lst == NULL || f == NULL || del == NULL)
+	if (nmemb != 0 && size != 0 && (nmemb * size) / size != nmemb)
 		return (NULL);
-	res = NULL;
-	while (lst != NULL)
-	{
-		data = ft_lstnew((*f)(lst->content));
-		if (data == NULL)
-		{
-			ft_lstclear(&res, del);
-			return (NULL);
-		}
-		ft_lstadd_back(&res, data);
-		lst = lst->next;
-	}
-	return (res);
+	if (nmemb == 0 || size == 0)
+		return (malloc(0));
+	ptr = malloc(nmemb * size);
+	if (ptr == NULL)
+		return (ptr);
+	memset(ptr, 0, nmemb * size);
+	return (ptr);
 }

@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 12:37:59 by psalame           #+#    #+#             */
-/*   Updated: 2023/11/21 17:07:26 by psalame          ###   ########.fr       */
+/*   Created: 2023/12/06 13:51:26 by psalame           #+#    #+#             */
+/*   Updated: 2023/12/06 13:53:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philosophers.h"
 
-ssize_t	ft_putnbr_fd(int n, int fd)
+int	ft_atoi(const char *nptr)
 {
-	unsigned int	un;
-	char			c;
-	ssize_t			len;
+	size_t	i;
+	int		sign;
+	int		res;
 
-	len = 0;
-	if (n < 0)
+	i = 0;
+	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == ' ')
+		i++;
+	sign = 1;
+	if (nptr[i] == '+' || nptr[i] == '-')
+		if (nptr[i++] == '-')
+			sign = -1;
+	res = 0;
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		len += write(fd, "-", 1);
-		un = -n;
+		res = res * 10 + nptr[i] - '0';
+		i++;
 	}
-	else
-		un = n;
-	if (un > 9)
-		len += ft_putnbr_fd(un / 10, fd);
-	c = un % 10 + '0';
-	len += write(fd, &c, 1);
-	return (len);
+	return (res * sign);
 }

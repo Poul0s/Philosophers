@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/05 19:22:16 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/06 14:34:35 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,12 @@ override CFLAGS = -g
 
 SRC			=	main.c \
 				error.c \
+				threads.c \
+				utils/ft_atoi.c \
+				utils/ft_calloc.c \
 				philosopher/create_philosoph.c \
 				philosopher/free_table.c \
 				philosopher/philosopher.c \
-				free_threads.c \
 
 OBJ			=	$(addprefix obj/, $(SRC:.c=.o))
 
@@ -33,13 +35,10 @@ OBJ_DIR		=	$(sort $(dir $(OBJ)))
 
 NAME		=	philo
 
-LIBFT_PATH	=	./libft
 
-LIBFT		=	$(LIBFT_PATH)/libft.a
+LIBS		=	-lpthread
 
-LIBS		=	-lft -L$(LIBFT_PATH) -lpthread
-
-INCLUDES	=	-I$(LIBFT_PATH)/header -I./header
+INCLUDES	=	-I./header
 
 
 
@@ -48,10 +47,8 @@ INCLUDES	=	-I$(LIBFT_PATH)/header -I./header
 all: $(NAME)
 
 clean:
-	make -C $(LIBFT_PATH) clean
 	rm -rf obj
 fclean: clean
-	make -C $(LIBFT_PATH) fclean
 	rm -rf $(NAME)
 
 re: fclean all
@@ -62,10 +59,7 @@ re: fclean all
 
 # COMPLEMENTARY FUNCTIONS
 
-$(LIBFT):
-	make -C $(LIBFT_PATH)
-
-$(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
+$(NAME): $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
 obj/%.o: %.c
