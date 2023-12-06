@@ -6,17 +6,18 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:03:02 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/04 23:51:41 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/05 18:48:53 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHOLOSOPHERS_H
+#ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 # include "libft.h"
 # include <stdbool.h>
 # include <stdio.h>
+# include <pthread.h>
 
-typedef struct	s_state
+typedef enum e_state
 {
 	thinking,
 	eating,
@@ -31,9 +32,9 @@ typedef struct s_philosoph
 	int					id;
 	struct s_philosoph	*right;
 	struct s_philosoph	*left;
-}							t_philosoph;
+}						t_philosoph;
 
-typedef struct	s_simulation_data
+typedef struct s_simulation_data
 {
 	int		nb_philosophers;
 	long	die_time;
@@ -43,9 +44,12 @@ typedef struct	s_simulation_data
 }			t_simulation_data;
 
 // Error managment
-void	exit_error();
+void		exit_error(t_philosoph *first, pthread_t *thread);
 
 t_philosoph	*create_philosophs(t_simulation_data data);
-void		born_philosoph(t_philosoph *philosoph);
+void		free_philosophers(t_philosoph **first);
+void		*born_philosoph(void *data);
+void		free_threads(pthread_t *threads);
+
 
 #endif

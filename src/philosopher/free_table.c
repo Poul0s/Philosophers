@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
+/*   free_table.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 19:32:48 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/05 19:26:43 by psalame          ###   ########.fr       */
+/*   Created: 2023/12/05 16:47:28 by psalame           #+#    #+#             */
+/*   Updated: 2023/12/05 17:38:35 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	*born_philosoph(void *data)
+void	free_philosophers(t_philosoph **first)
 {
-	t_philosoph *philosoph;
-	int	id;
+	t_philosoph	*current;
+	t_philosoph	*next;
 
-	philosoph = data;
-	id = philosoph->id;
-	printf("borning %d\n", id);
-	while (id == 3);
-	printf("Philosopher %d bornt\n", id);
+	if (first == NULL)
+		return ;
+	current = *first;
+	while (current != NULL)
+	{
+		next = current->right;
+		if (next == *first)
+			next = NULL;
+		free(current);
+		current = next;
+	}
 }

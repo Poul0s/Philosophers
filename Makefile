@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/04 18:51:00 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/05 19:22:16 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,16 @@ CFLAGS 		= -Wall -Wextra -Werror
 
 override CFLAGS = -g
 
-SRC			=	
+SRC			=	main.c \
+				error.c \
+				philosopher/create_philosoph.c \
+				philosopher/free_table.c \
+				philosopher/philosopher.c \
+				free_threads.c \
 
-OBJ			=	$(addprefix obj/, $(SRCS:.c=.o))
+OBJ			=	$(addprefix obj/, $(SRC:.c=.o))
+
+SRC			:=	$(addprefix src/, $(SRC))
 
 OBJ_DIR		=	$(sort $(dir $(OBJ)))
 
@@ -30,9 +37,9 @@ LIBFT_PATH	=	./libft
 
 LIBFT		=	$(LIBFT_PATH)/libft.a
 
-LIBS		=	-lft -L$(LIBFT_PATH)
+LIBS		=	-lft -L$(LIBFT_PATH) -lpthread
 
-INCLUDES	=	$(LIBFT_PATH)/header
+INCLUDES	=	-I$(LIBFT_PATH)/header -I./header
 
 
 
@@ -62,7 +69,7 @@ $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
 obj/%.o: %.c
-	$(CC) $(CFLAGS) $^ $(INCLUDES) -o $@
+	$(CC) $(CFLAGS) -c $^ $(INCLUDES) -o $@
 
 $(OBJ_DIR):
 	@mkdir -p $@
