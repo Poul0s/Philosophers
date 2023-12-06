@@ -1,0 +1,4 @@
+5 800 200 200 7 -> no one should die but it die
+5 800 200 200 -> idem
+100 800 200 200 -> idem
+105 800 200 200 -> idem lol
