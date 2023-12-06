@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:32:48 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/06 18:24:09 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/06 18:30:58 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,16 @@ static void	check_sleep(t_philosoph *philosoph)
 static void	check_think(t_philosoph *philosoph)
 {
 	long				current_time;
+	t_philosoph			*left_fork_owner;
+	t_philosoph			*right_fork_owner;
 
-	if (philosoph->right->state != eating && philosoph->left->state != eating)
+	left_fork_owner = NULL;
+	right_fork_owner = NULL;
+	if (philosoph->right->state != eating)
+		right_fork_owner = philosoph;
+	if (philosoph->left->state != eating && philosoph->left != philosoph)
+		left_fork_owner = philosoph->left;
+	if (left_fork_owner && right_fork_owner)
 	{
 		current_time = get_program_time();
 		philosoph->state = eating;
