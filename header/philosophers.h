@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:03:02 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/07 15:17:34 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 15:28:46 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef enum e_state
 	sleeping
 }	t_state;
 
-// todo add round table struct with list of philo & forks (remove dbl chained lsit system)
+// todo add round table struct with list of philo & forks
 typedef struct s_fork
 {
 	bool			taken;
@@ -71,6 +71,13 @@ void		release_forks(int fork_a_id, t_simulation_data *data);
 bool		try_take_forks(int right_fork_id, t_simulation_data *data);
 bool		get_simulation_state(t_simulation_data *data);
 void		set_simulation_state(t_simulation_data *data, bool state);
+
+// Philosoph check state change
+void		check_think(t_philosoph *philosoph);
+void		check_sleep(t_philosoph *philosoph);
+void		check_eat(t_philosoph *philosoph);
+void		check_end(t_philosoph *philosoph);
+void		check_dead(t_philosoph *philosoph);
 
 // Others
 t_philosoph	*create_philosophs(t_simulation_data data);

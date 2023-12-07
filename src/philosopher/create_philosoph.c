@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 23:49:54 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/05 18:31:26 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:11:27 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_philosoph	*create_philosophs(t_simulation_data data)
 	{
 		current = ft_calloc(1, sizeof(t_philosoph));
 		if (current == NULL)
-			exit_error(first, NULL);
+			exit_error(first, NULL, data.table_forks);
 		if (!first)
 			first = current;
 		else

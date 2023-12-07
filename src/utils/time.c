@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:41:20 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/06 17:33:40 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 15:22:18 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 long	get_program_time(void)
 {
-	struct timeval	tv; 
+	struct timeval	tv;
 	static long		start_time;
 	long			time;
 

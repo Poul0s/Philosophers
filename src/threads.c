@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:33:29 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/07 15:19:44 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:08:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,15 @@ void	join_threads(pthread_t *threads)
 	free(threads);
 }
 
-// todo send pointer of *threads
-void	init_threads(pthread_t **threads, t_philosoph *first, t_simulation_data *data)
+void	init_threads(pthread_t **threads, \
+					t_philosoph *first, \
+					t_simulation_data *data)
 {
 	t_philosoph	*current;
 	int			id;
+
 	current = first;
 	id = 0;
-	
 	while (current)
 	{
 		current->id = ++id;

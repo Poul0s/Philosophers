@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/07 14:23:13 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/07 18:10:32 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC			=	main.c \
 				utils/time.c \
 				philosopher/mutex/forks.c \
 				philosopher/mutex/simulation_state.c \
+				philosopher/check_state.c \
 				philosopher/create_philosoph.c \
 				philosopher/free_table.c \
 				philosopher/philosopher.c \

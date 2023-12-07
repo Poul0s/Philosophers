@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:40:21 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/07 14:29:57 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 15:24:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ bool	try_take_forks(int fork_a_id, t_simulation_data *data)
 	pthread_mutex_lock(&(data->table_forks[fork_a_id].mutex));
 	pthread_mutex_lock(&(data->table_forks[fork_b_id].mutex));
 	res = true;
-	if (data->table_forks[fork_a_id].taken || 
-			data->table_forks[fork_b_id].taken)
+	if (data->table_forks[fork_a_id].taken || \
+		data->table_forks[fork_b_id].taken)
 		res = false;
 	if (res)
 	{
-		data->table_forks[fork_a_id].taken = true;	
-		data->table_forks[fork_b_id].taken = true;	
+		data->table_forks[fork_a_id].taken = true;
+		data->table_forks[fork_b_id].taken = true;
 	}
 	pthread_mutex_unlock(&(data->table_forks[fork_a_id].mutex));
 	pthread_mutex_unlock(&(data->table_forks[fork_b_id].mutex));
@@ -49,7 +49,7 @@ void	release_forks(int fork_a_id, t_simulation_data *data)
 		return ;
 	pthread_mutex_lock(&(data->table_forks[fork_a_id].mutex));
 	pthread_mutex_lock(&(data->table_forks[fork_b_id].mutex));
-	data->table_forks[fork_a_id].taken = false;	
+	data->table_forks[fork_a_id].taken = false;
 	data->table_forks[fork_b_id].taken = false;
 	pthread_mutex_unlock(&(data->table_forks[fork_a_id].mutex));
 	pthread_mutex_unlock(&(data->table_forks[fork_b_id].mutex));
