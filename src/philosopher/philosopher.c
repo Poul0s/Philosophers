@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:32:48 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/06 18:30:58 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 09:22:26 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,25 +102,30 @@ static void	check_think(t_philosoph *philosoph)
 	}
 }
 
-static void	update_action(t_philosoph *philosoph)
+static long	update_action(t_philosoph *philosoph)
 {
+	long	sleep_time;
+
+	sleep_time = 1;
 	if (philosoph->state == eating)
-		return (check_eat(philosoph));
+		check_eat(philosoph);
 	else if (philosoph->state == sleeping)
 	{
 		check_sleep(philosoph);
+		if (philosoph->state == thinking)
+			sleep_time = 2;
 	}
 	else if (philosoph->state == thinking)
-	{
 		check_think(philosoph);
-	}
 	check_dead(philosoph);
+	return (sleep_time);
 }
 
 void	*born_philosoph(void *data)
 {
 	t_philosoph 	*philosoph;
 	int				int_min;
+	int				sleep_time;
 
 	int_min = -2147483648;
 	while (int_min == -int_min)
@@ -133,9 +138,10 @@ void	*born_philosoph(void *data)
 			pthread_mutex_unlock(&philosoph->simulation->mutex);
 			return (NULL);
 		}
-		update_action(philosoph);
+		sleep_time = update_action(philosoph);
 		pthread_mutex_unlock(&philosoph->simulation->mutex);
-		usleep(1000);
+		usleep(sleep_time * 1000);
+		// todo take a fork && naybe remove sleep_time from usleep
 	}
 	return (NULL);
 }
