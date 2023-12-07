@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:34:28 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/06 17:40:57 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 15:04:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	print_state(t_philosoph *philosoph, long time)
 {
+	pthread_mutex_lock(&philosoph->simulation->mutex);
 	if (philosoph->last_meal_date + philosoph->simulation->die_time < time)
 		printf("%ld %d died\n", time, philosoph->id);
-	else
+	else if (philosoph->simulation->active)
 	{
 		if (philosoph->state == eating)
 		{
@@ -29,4 +30,5 @@ void	print_state(t_philosoph *philosoph, long time)
 		else
 			printf("%ld %d is thinking\n", time, philosoph->id);
 	}
+	pthread_mutex_unlock(&philosoph->simulation->mutex);
 }

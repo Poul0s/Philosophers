@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:03:02 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/06 18:05:40 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 15:17:34 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef enum e_state
 	sleeping
 }	t_state;
 
+// todo add round table struct with list of philo & forks (remove dbl chained lsit system)
+typedef struct s_fork
+{
+	bool			taken;
+	pthread_mutex_t	mutex;
+}					t_fork;
+
 typedef struct s_simulation_data
 {
 	int					nb_philosophers;
@@ -36,6 +43,7 @@ typedef struct s_simulation_data
 	int					nb_meal;
 	bool				active;
 	pthread_mutex_t		mutex;
+	t_fork				*table_forks;
 }			t_simulation_data;
 
 typedef struct s_philosoph
@@ -56,8 +64,15 @@ int			ft_atoi(const char *nptr);
 long		get_program_time(void);
 
 // Error managment
-void		exit_error(t_philosoph *first, pthread_t *thread);
+void		exit_error(t_philosoph *first, pthread_t *thread, t_fork *forks);
 
+// multi-threads variable managment
+void		release_forks(int fork_a_id, t_simulation_data *data);
+bool		try_take_forks(int right_fork_id, t_simulation_data *data);
+bool		get_simulation_state(t_simulation_data *data);
+void		set_simulation_state(t_simulation_data *data, bool state);
+
+// Others
 t_philosoph	*create_philosophs(t_simulation_data data);
 void		free_philosophers(t_philosoph **first);
 void		*born_philosoph(void *data);

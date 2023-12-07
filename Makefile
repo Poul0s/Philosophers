@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/06 18:03:59 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/07 14:23:13 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC 			= cc
 
 CFLAGS 		= -Wall -Wextra -Werror
 
-# override CFLAGS = -g
+override CFLAGS = -g
 
 SRC			=	main.c \
 				error.c \
@@ -24,6 +24,8 @@ SRC			=	main.c \
 				utils/ft_atoi.c \
 				utils/ft_calloc.c \
 				utils/time.c \
+				philosopher/mutex/forks.c \
+				philosopher/mutex/simulation_state.c \
 				philosopher/create_philosoph.c \
 				philosopher/free_table.c \
 				philosopher/philosopher.c \

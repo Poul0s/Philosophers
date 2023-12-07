@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:32:48 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/07 09:22:26 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/07 15:08:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	check_dead(t_philosoph *philosoph)
 	current_time = get_program_time();
 	if (philosoph->last_meal_date + philosoph->simulation->die_time < current_time)
 	{
-		philosoph->simulation->active = false;
+		set_simulation_state(philosoph->simulation, false);
 		print_state(philosoph, current_time);
 	}
 }
@@ -45,7 +45,7 @@ static void	check_end(t_philosoph *philosoph)
 			current = NULL;
 	}
 	if (all_philosoph_eaten)
-		philosoph->simulation->active = false;
+		set_simulation_state(philosoph->simulation, false);
 }
 
 static void	check_eat(t_philosoph *philosoph)
@@ -61,6 +61,7 @@ static void	check_eat(t_philosoph *philosoph)
 		philosoph->state_date = current_time;
 		philosoph->number_meal++;
 		print_state(philosoph, current_time);
+		release_forks(philosoph->id - 1, philosoph->simulation);
 		check_end(philosoph);
 	}
 }
@@ -82,17 +83,9 @@ static void	check_sleep(t_philosoph *philosoph)
 
 static void	check_think(t_philosoph *philosoph)
 {
-	long				current_time;
-	t_philosoph			*left_fork_owner;
-	t_philosoph			*right_fork_owner;
+	long	current_time;
 
-	left_fork_owner = NULL;
-	right_fork_owner = NULL;
-	if (philosoph->right->state != eating)
-		right_fork_owner = philosoph;
-	if (philosoph->left->state != eating && philosoph->left != philosoph)
-		left_fork_owner = philosoph->left;
-	if (left_fork_owner && right_fork_owner)
+	if (try_take_forks(philosoph->id - 1, philosoph->simulation))
 	{
 		current_time = get_program_time();
 		philosoph->state = eating;
@@ -116,7 +109,11 @@ static long	update_action(t_philosoph *philosoph)
 			sleep_time = 2;
 	}
 	else if (philosoph->state == thinking)
+	{
 		check_think(philosoph);
+		if (philosoph->state == thinking)
+			sleep_time = 0;
+	}
 	check_dead(philosoph);
 	return (sleep_time);
 }
@@ -131,17 +128,10 @@ void	*born_philosoph(void *data)
 	while (int_min == -int_min)
 	{
 		philosoph = data;
-		while (pthread_mutex_lock(&philosoph->simulation->mutex))
-			usleep(10);
-		if (!philosoph->simulation->active)
-		{
-			pthread_mutex_unlock(&philosoph->simulation->mutex);
+		if (!get_simulation_state(philosoph->simulation))
 			return (NULL);
-		}
 		sleep_time = update_action(philosoph);
-		pthread_mutex_unlock(&philosoph->simulation->mutex);
 		usleep(sleep_time * 1000);
-		// todo take a fork && naybe remove sleep_time from usleep
 	}
 	return (NULL);
 }

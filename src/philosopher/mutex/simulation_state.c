@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   simulation_state.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 19:41:36 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/07 15:17:56 by psalame          ###   ########.fr       */
+/*   Created: 2023/12/07 13:56:44 by psalame           #+#    #+#             */
+/*   Updated: 2023/12/07 14:26:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	exit_error(t_philosoph *first, pthread_t *threads, t_fork *forks)
+bool	get_simulation_state(t_simulation_data *data)
 {
-	write(2, "Error\n", 6);
-	if (first)
-		free_philosophers(&first);
-	free(threads);
-	free(forks);
-	exit(EXIT_FAILURE);
+	bool	res;
+	pthread_mutex_lock(&data->mutex);
+		// usleep(1);
+	res = data->active;
+	pthread_mutex_unlock(&data->mutex);
+	return (res);
 }
+
+void	set_simulation_state(t_simulation_data *data, bool state)
+{
+	pthread_mutex_lock(&data->mutex);
+		// usleep(1);
+	data->active = state;
+	pthread_mutex_unlock(&data->mutex);
+}
+
