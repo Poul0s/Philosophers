@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:03:02 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/07 15:28:46 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/08 17:20:58 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef enum e_state
 	sleeping
 }	t_state;
 
-// todo add round table struct with list of philo & forks
 typedef struct s_fork
 {
 	bool			taken;

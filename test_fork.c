@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 19:09:13 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/07 20:05:07 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/08 17:02:25 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <string.h>
+#define SEMA_NAME "sema"
 
 void	open_forks(void)
 {
@@ -28,15 +30,18 @@ void	open_forks(void)
 		int child = fork();
 		if (getpid() != parent_pid)
 		{
-			sem_t *sem = sem_open("AAC", O_RDWR | O_SYNC);
+			sem_t *sem = sem_open(SEMA_NAME, O_RDWR);
 			if (sem == SEM_FAILED)
 				printf("failed %s\n", strerror(errno));
 			else
 			{
-				sem_wait(sem);
-				printf("yessir\n");
+				if (sem_wait(sem) != 0)
+					printf("error : %s\n", strerror(errno));
+				else
+					printf("yessir\n");
 				usleep(1000000);
 				sem_post(sem);
+				sem_close(sem);
 			}
 			exit(EXIT_SUCCESS);
 		}
@@ -51,17 +56,17 @@ void	open_forks(void)
 
 int	main(void)
 {
-	sem_t	*sem = sem_open("AAC", O_CREAT);
-	// initialise 5 forks
+	sem_unlink(SEMA_NAME);
+	sem_t	*sem = sem_open(SEMA_NAME, O_CREAT, 0777, 2);
 	if (sem == SEM_FAILED)
 	{
 		printf("failed main %s\n", strerror(errno));
 		return (1);
 	}
-	for (int i = 0; i < 5; i++)
-		sem_post(sem);
+	if (sem_close(sem) != 0)
+		printf("error on closing : %s\n", strerror(errno));
 	open_forks();
-	if (sem_unlink("AAC") != 0)
-		printf("failed to remove sem : %s\n", strerror(errno));
+	if (sem_unlink(SEMA_NAME) != 0)	printf("second\n");
+
 	return (0);
 }
