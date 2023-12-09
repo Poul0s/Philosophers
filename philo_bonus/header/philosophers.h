@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:15:10 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/08 17:48:39 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/09 15:13:26 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <stdlib.h>
+# include <signal.h>
 # define SEMA_FORKS "philo_forks"
 # define SEMA_PRINT "philo_print"
 
@@ -48,7 +49,16 @@ typedef struct s_simulation_data
 	int		nb_meal;
 }			t_simulation_data;
 
+typedef struct s_children_pids
+{
+	int	*pids;
+	int	current_pid;
+	int	checker_pthread
+}		t_children_pids;
+
+
 // utils
+// todo ceck if all used
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_atoi(const char *nptr);
 long	get_program_time(void);
@@ -56,6 +66,9 @@ long	get_program_time(void);
 // Error managment
 void	exit_error(void);
 
+// multi-process managment
+int		*init_philosophers(t_simulation_data data);
+void	wait_process_finish(void); // todo lock print semaphore is do it
 
 
 

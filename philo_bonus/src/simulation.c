@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:46:50 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/08 18:59:38 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/09 15:12:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,51 @@ static void	init_semaphores(t_simulation_data data)
 	sem_close(sem);
 }
 
+static void	wait_philo_finished(int *pids)
+{
+	
+}
+
+static t_children_pids	**alloc_children_data(int nb_pids)
+{
+	t_children_pids	**children_data;
+	int				i;
+
+	children_data = malloc((nb_pids + 1) * sizeof(t_children_pids *));
+	if (children_data == NULL)
+		exit_error();
+	children_data[nb_pids] = NULL;
+	i = 0;
+	while (i < nb_pids)
+	{
+		children_data[i] = malloc(sizeof(t_children_pids));
+		if (children_data[i] == NULL)
+			exit_error(children_data);
+		i++;
+	}
+	return (children_data);
+}
+
 void	start_simulation(t_simulation_data data)
 {
+	int				*pids;
+	t_children_pids	**children_data;
+	int				i;
+
+	children_data = alloc_children_data(data.nb_philosophers); // todo add to exit_error for free it
 	init_semaphores(data);
-	// todo create philo with fork
-	   // on function create philo: create main philo in var and set the philo id for each + fork 
-	      // -> then if children continue with philo runtine else continue main process
+	pids = init_philosophers(data);
+	i = 0;
+	while (i < data.nb_philosophers)
+	{
+		children_data[i]->current_pid = pids[i];
+		children_data[i]->pids = pids;
+		i++;
+	}
 	// wait each children in thread 
-	   // x-> if one exit : kill all other childrens
+		// x-> if one exit : kill all other childrens
 	// so join threads
-	// its end lol
+	// then free children_data
 	sem_unlink(SEMA_FORKS);
 	sem_unlink(SEMA_PRINT);
 }
