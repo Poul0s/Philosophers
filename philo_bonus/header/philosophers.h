@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:15:10 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/09 15:13:26 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/10 17:35:26 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,12 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <sys/time.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <pthread.h>
 # define SEMA_FORKS "philo_forks"
 # define SEMA_PRINT "philo_print"
-
-typedef enum e_state
-{
-	thinking,
-	eating,
-	sleeping
-}	t_state;
-
-typedef struct s_philosoph
-{
-	t_state	state;
-	long	state_date;
-	long	last_meal_date;
-	int		number_meal;
-	int		id;
-}			t_philosoph;
 
 typedef struct s_simulation_data
 {
@@ -49,27 +35,55 @@ typedef struct s_simulation_data
 	int		nb_meal;
 }			t_simulation_data;
 
+typedef enum e_state
+{
+	thinking,
+	eating,
+	sleeping
+}	t_state;
+
+typedef struct s_philosoph
+{
+	t_state				state;
+	long				state_date;
+	long				last_meal_date;
+	int					number_meal;
+	short				number_forks;
+	int					id;
+	t_simulation_data	simulation_data;
+}						t_philosoph;
+
 typedef struct s_children_pids
 {
-	int	*pids;
-	int	current_pid;
-	int	checker_pthread
+	int			*pids;
+	int			current_pid;
+	pthread_t	checker_pthread;
 }		t_children_pids;
 
 
 // utils
-// todo ceck if all used
-void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_atoi(const char *nptr);
 long	get_program_time(void);
 
 // Error managment
-void	exit_error(void);
+void	exit_error(t_children_pids **children_data);
+
+// philosophers life
+void	check_dead(t_philosoph *philosoph);
+void	check_end(t_philosoph *philosoph);
+void	check_eat(t_philosoph *philosoph);
+void	check_sleep(t_philosoph *philosoph);
+void	check_think(t_philosoph *philosoph);
+void	print_state(t_philosoph *philosoph, long time);
+void	print_fork_taken(t_philosoph *philosoph, long time);
+void	start_philosopher_process(t_philosoph philosoph);
 
 // multi-process managment
-int		*init_philosophers(t_simulation_data data);
+int		*init_philosophers(t_simulation_data data, t_children_pids **children_data);
 void	wait_process_finish(void); // todo lock print semaphore is do it
-
-
+void	wait_available_forks(t_philosoph *philosoph);
+void	put_forks_back(t_philosoph *philosoph);
+void	start_simulation(t_simulation_data data);
+void	kill_philosophers(int *pids);
 
 #endif

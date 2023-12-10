@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/07 18:10:32 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/10 17:24:46 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,16 +20,14 @@ override CFLAGS = -g
 
 SRC			=	main.c \
 				error.c \
-				threads.c \
+				simulation.c \
 				utils/ft_atoi.c \
-				utils/ft_calloc.c \
 				utils/time.c \
-				philosopher/mutex/forks.c \
-				philosopher/mutex/simulation_state.c \
 				philosopher/check_state.c \
-				philosopher/create_philosoph.c \
-				philosopher/free_table.c \
-				philosopher/philosopher.c \
+				philosopher/forks_manager.c \
+				philosopher/init.c \
+				philosopher/kill_process.c \
+				philosopher/philo_life.c \
 				philosopher/print_state.c \
 
 OBJ			=	$(addprefix obj/, $(SRC:.c=.o))
@@ -38,7 +36,7 @@ SRC			:=	$(addprefix src/, $(SRC))
 
 OBJ_DIR		=	$(sort $(dir $(OBJ)))
 
-NAME		=	philo
+NAME		=	philo_bonus
 
 
 LIBS		=	-lpthread

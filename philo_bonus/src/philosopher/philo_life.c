@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
+/*   philo_life.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 19:32:48 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 15:54:45 by psalame          ###   ########.fr       */
+/*   Created: 2023/12/10 15:48:31 by psalame           #+#    #+#             */
+/*   Updated: 2023/12/10 17:03:53 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,15 @@ static long	update_action(t_philosoph *philosoph)
 	return (sleep_time);
 }
 
-void	*born_philosoph(void *data)
+void	start_philosopher_process(t_philosoph philosoph)
 {
-	t_philosoph		*philosoph;
-	int				int_min;
-	int				sleep_time;
+	int	sleep_time;
 
-	int_min = -2147483648;
-	print_state(data, 0);
-	while (int_min == -int_min)
+	print_state(&philosoph, 0);
+	wait_available_forks(&philosoph);
+	while (1)
 	{
-		philosoph = data;
-		if (!get_simulation_state(philosoph->simulation))
-			return (NULL);
-		sleep_time = update_action(philosoph);
+		sleep_time = update_action(&philosoph);
 		usleep(sleep_time * 1000);
 	}
-	return (NULL);
 }
