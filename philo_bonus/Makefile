@@ -6,15 +6,15 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/10 17:24:46 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/10 18:10:55 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # MAKE VARIABLES
 
-CC 			= cc
+CC			= cc
 
-CFLAGS 		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror
 
 override CFLAGS = -g
 

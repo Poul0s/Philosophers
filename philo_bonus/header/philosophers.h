@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:15:10 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 17:35:26 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/10 18:20:07 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_philosoph
 typedef struct s_children_pids
 {
 	int			*pids;
-	int			current_pid;
+	int			current_pid_i;
 	pthread_t	checker_pthread;
 }		t_children_pids;
 
@@ -80,7 +80,7 @@ void	start_philosopher_process(t_philosoph philosoph);
 
 // multi-process managment
 int		*init_philosophers(t_simulation_data data, t_children_pids **children_data);
-void	wait_process_finish(void); // todo lock print semaphore is do it
+void	wait_process_finish(void);
 void	wait_available_forks(t_philosoph *philosoph);
 void	put_forks_back(t_philosoph *philosoph);
 void	start_simulation(t_simulation_data data);

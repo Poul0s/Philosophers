@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:46:50 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 17:31:32 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/10 18:21:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	init_semaphores(t_simulation_data data)
 
 	sem_unlink(SEMA_FORKS);
 	sem_unlink(SEMA_PRINT);
-	sem = sem_open(SEMA_FORKS, O_CREAT, 0777, data.nb_philosophers); // todo check what happen if set at 0644
+	sem = sem_open(SEMA_FORKS, O_CREAT, 0777, data.nb_philosophers);
 	if (sem == SEM_FAILED)
 		exit_error(NULL);
 	sem_close(sem);
@@ -32,13 +32,20 @@ static void	init_semaphores(t_simulation_data data)
 
 static void	*wait_philo_finished(void *data)
 {
-	int				i;
 	sem_t			*sem;
 	t_children_pids *children_data;
+	int				wstatus;
+	int				current_pid;
 
 	children_data = data;
-	waitpid(children_data->current_pid, NULL, 0);
-	i = 0;
+	current_pid = children_data->pids[children_data->current_pid_i];
+	waitpid(current_pid, &wstatus, 0);
+	children_data->pids[children_data->current_pid_i] = 0;
+	if (WEXITSTATUS(wstatus) == EXIT_SUCCESS)
+	{
+		printf("has finished life\n");
+		return (NULL);
+	}
 	sem = sem_open(SEMA_PRINT, O_RDWR);
 	if (sem == SEM_FAILED)
 		exit_error(NULL);

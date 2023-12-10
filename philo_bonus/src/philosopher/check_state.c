@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:27:05 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 17:34:00 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/10 19:20:21 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	check_dead(t_philosoph *philosoph)
 	if (last_meal_date + die_time < current_time)
 	{
 		print_state(philosoph, current_time);
-		exit(EXIT_SUCCESS);
+		exit(EXIT_FAILURE);  // todo remove : add semaphore for die and wait it in parent thread
 	}
 }
 
@@ -32,9 +32,8 @@ void	check_end(t_philosoph *philosoph)
 {
 	if (philosoph->simulation_data.nb_meal == -1)
 		return ;
-	// todo
-	// maybe use semaphore but how to do it ??
-	// check waitpid man --> wstatus arg
+	if (philosoph->number_meal >= philosoph->simulation_data.nb_meal)
+		exit(EXIT_SUCCESS);// todo remove : add a sema for each philosoph if all eaten (one sema for each or sema at size 0 and wait nb philosoph ticket (post semaphore when full ate))
 }
 
 void	check_eat(t_philosoph *philosoph)

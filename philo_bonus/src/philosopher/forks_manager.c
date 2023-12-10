@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:51:29 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 17:35:06 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/10 18:25:20 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	wait_available_forks(t_philosoph *philosoph)
 	pthread_t	thread;
 
 	pthread_create(&thread, NULL, &take_forks, philosoph);
-	pthread_detach(thread); // maybe can make segfault
+	pthread_detach(thread);
 }
 
 void	put_forks_back(t_philosoph *philosoph)
@@ -47,5 +47,6 @@ void	put_forks_back(t_philosoph *philosoph)
 	sem = sem_open(SEMA_FORKS, O_RDWR);
 	sem_post(sem);
 	sem_post(sem);
+	philosoph->number_forks = 0;
 	sem_close(sem);
 }

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 11:37:19 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 17:32:17 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/10 18:20:02 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	*init_philosophers(t_simulation_data data, t_children_pids **children_data)
 			exit_error(children_data);
 		}
 		children_data[i]->pids = pids;
-		children_data[i]->current_pid = pids[i];
+		children_data[i]->current_pid_i = i;
 		i++;
 	}
 	return (pids);
