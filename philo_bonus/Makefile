@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/11 13:03:57 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/11 16:02:22 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,6 @@
 CC			= cc
 
 CFLAGS		= -Wall -Wextra -Werror
-
-override CFLAGS = -g
 
 SRC			=	main.c \
 				error.c \

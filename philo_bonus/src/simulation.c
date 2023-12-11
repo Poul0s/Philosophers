@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:46:50 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/11 13:41:57 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/11 16:01:54 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	*wait_all_process_finish(void *data)
 void	start_simulation(t_simulation_data data)
 {
 	int			*pids;
-	int			i;
 	pthread_t	thread_died;
 	pthread_t	thread_eaten;
 	pthread_t	thread_process;
