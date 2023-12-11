@@ -6,17 +6,18 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:27:05 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 19:20:21 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:45:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	check_dead(t_philosoph *philosoph)
+char	check_dead(t_philosoph *philosoph)
 {
 	long	current_time;
 	long	last_meal_date;
 	long	die_time;
+	sem_t	*sem;
 
 	current_time = get_program_time();
 	last_meal_date = philosoph->last_meal_date;
@@ -24,16 +25,27 @@ void	check_dead(t_philosoph *philosoph)
 	if (last_meal_date + die_time < current_time)
 	{
 		print_state(philosoph, current_time);
-		exit(EXIT_FAILURE);  // todo remove : add semaphore for die and wait it in parent thread
+		sem = sem_open(SEMA_DIED, O_RDWR);
+		sem_post(sem);
+		sem_close(sem);
+		return (1);
 	}
+	else
+		return (0);
 }
 
 void	check_end(t_philosoph *philosoph)
 {
+	sem_t	*sem;
+
 	if (philosoph->simulation_data.nb_meal == -1)
 		return ;
-	if (philosoph->number_meal >= philosoph->simulation_data.nb_meal)
-		exit(EXIT_SUCCESS);// todo remove : add a sema for each philosoph if all eaten (one sema for each or sema at size 0 and wait nb philosoph ticket (post semaphore when full ate))
+	if (philosoph->number_meal == philosoph->simulation_data.nb_meal)
+	{
+		sem = sem_open(SEMA_EATEN, O_RDWR);
+		sem_post(sem);
+		sem_close(sem);
+	}
 }
 
 void	check_eat(t_philosoph *philosoph)

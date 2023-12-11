@@ -6,13 +6,11 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:46:50 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 18:21:52 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:41:57 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-#include <errno.h> // todo rm
-#include <string.h> // todo rm
 
 static void	init_semaphores(t_simulation_data data)
 {
@@ -20,85 +18,93 @@ static void	init_semaphores(t_simulation_data data)
 
 	sem_unlink(SEMA_FORKS);
 	sem_unlink(SEMA_PRINT);
+	sem_unlink(SEMA_DIED);
+	sem_unlink(SEMA_EATEN);
 	sem = sem_open(SEMA_FORKS, O_CREAT, 0777, data.nb_philosophers);
 	if (sem == SEM_FAILED)
-		exit_error(NULL);
+		exit_error();
 	sem_close(sem);
 	sem = sem_open(SEMA_PRINT, O_CREAT, 0777, 1);
 	if (sem == SEM_FAILED)
-		exit_error(NULL);
+		exit_error();
+	sem_close(sem);
+	sem = sem_open(SEMA_DIED, O_CREAT, 0777, 0);
+	if (sem == SEM_FAILED)
+		exit_error();
+	sem_close(sem);
+	sem = sem_open(SEMA_EATEN, O_CREAT, 0777, 0);
+	if (sem == SEM_FAILED)
+		exit_error();
 	sem_close(sem);
 }
 
-static void	*wait_philo_finished(void *data)
+void	*wait_any_philo_died(void *data)
 {
-	sem_t			*sem;
-	t_children_pids *children_data;
-	int				wstatus;
-	int				current_pid;
+	int		*pids;
+	sem_t	*sem;
 
-	children_data = data;
-	current_pid = children_data->pids[children_data->current_pid_i];
-	waitpid(current_pid, &wstatus, 0);
-	children_data->pids[children_data->current_pid_i] = 0;
-	if (WEXITSTATUS(wstatus) == EXIT_SUCCESS)
-	{
-		printf("has finished life\n");
-		return (NULL);
-	}
-	sem = sem_open(SEMA_PRINT, O_RDWR);
-	if (sem == SEM_FAILED)
-		exit_error(NULL);
+	pids = data;
+	sem = sem_open(SEMA_DIED, O_RDWR);
 	sem_wait(sem);
-	kill_philosophers(children_data->pids);
+	kill_philosophers(pids);
+	sem_close(sem);
+	return (NULL);
+}
+
+void	*wait_all_philo_ate(void *data)
+{
+	int		i;
+	int		*pids;
+	sem_t	*sem;
+
+	pids = data;
+	sem = sem_open(SEMA_EATEN, O_RDWR);
+	i = 0;
+	while (pids[i++] != 0)
+		sem_wait(sem);
+	kill_philosophers(pids);
+	sem_close(sem);
+	return (NULL);
+}
+
+void	*wait_all_process_finish(void *data)
+{
+	int		*pids;
+	int		i;
+	sem_t	*sem;
+
+	pids = data;
+	i = 0;
+	while (pids[i++])
+		waitpid(pids[i], NULL, 0);
+	sem = sem_open(SEMA_DIED, O_RDWR);
+	sem_post(sem);
+	sem_close(sem);
+	sem = sem_open(SEMA_EATEN, O_RDWR);
 	sem_post(sem);
 	sem_close(sem);
 	return (NULL);
 }
 
-static t_children_pids	**alloc_children_data(int nb_pids)
-{
-	t_children_pids	**children_data;
-	int				i;
-
-	children_data = malloc((nb_pids + 1) * sizeof(t_children_pids *));
-	if (children_data == NULL)
-		exit_error(NULL);
-	children_data[nb_pids] = NULL;
-	i = 0;
-	while (i < nb_pids)
-	{
-		children_data[i] = malloc(sizeof(t_children_pids));
-		if (children_data[i] == NULL)
-			exit_error(children_data);
-		i++;
-	}
-	return (children_data);
-}
-
 void	start_simulation(t_simulation_data data)
 {
-	int				*pids;
-	t_children_pids	**children_data;
-	int				i;
+	int			*pids;
+	int			i;
+	pthread_t	thread_died;
+	pthread_t	thread_eaten;
+	pthread_t	thread_process;
 
 	init_semaphores(data);
-	children_data = alloc_children_data(data.nb_philosophers);
-	pids = init_philosophers(data, children_data);
-	i = 0;
-	while (i < data.nb_philosophers)
-	{
-		pthread_create(&children_data[i]->checker_pthread, NULL, &wait_philo_finished, children_data[i]);
-		i++;
-	}
-	i = 0;
-	while (i < data.nb_philosophers)
-		pthread_join(children_data[i++]->checker_pthread, NULL);
-	i = 0;
-	while (children_data[i] != NULL)
-		free(children_data[i++]);
-	free(children_data);
+	pids = init_philosophers(data);
+	pthread_create(&thread_died, NULL, &wait_any_philo_died, pids);
+	pthread_create(&thread_eaten, NULL, &wait_all_philo_ate, pids);
+	pthread_create(&thread_process, NULL, &wait_all_process_finish, pids);
+	pthread_join(thread_process, NULL);
+	pthread_join(thread_eaten, NULL);
+	pthread_join(thread_died, NULL);
 	free(pids);
 	sem_unlink(SEMA_FORKS);
 	sem_unlink(SEMA_PRINT);
+	sem_unlink(SEMA_DIED);
+	sem_unlink(SEMA_EATEN);
 }

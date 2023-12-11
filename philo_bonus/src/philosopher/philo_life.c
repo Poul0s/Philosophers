@@ -6,15 +6,15 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 15:48:31 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 17:03:53 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:44:11 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static long	update_action(t_philosoph *philosoph)
+static int	update_action(t_philosoph *philosoph)
 {
-	long	sleep_time;
+	int	sleep_time;
 
 	sleep_time = 1;
 	if (philosoph->state == eating)
@@ -31,7 +31,8 @@ static long	update_action(t_philosoph *philosoph)
 		if (philosoph->state == thinking)
 			sleep_time = 0;
 	}
-	check_dead(philosoph);
+	if (check_dead(philosoph))
+		return (-1);
 	return (sleep_time);
 }
 
@@ -44,6 +45,8 @@ void	start_philosopher_process(t_philosoph philosoph)
 	while (1)
 	{
 		sleep_time = update_action(&philosoph);
+		if (sleep_time == -1)
+			return ;
 		usleep(sleep_time * 1000);
 	}
 }

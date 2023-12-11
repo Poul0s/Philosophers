@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:15:10 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 18:20:07 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:44:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <pthread.h>
 # define SEMA_FORKS "philo_forks"
 # define SEMA_PRINT "philo_print"
+# define SEMA_DIED "philo_died"
+# define SEMA_EATEN "philo_eaten"
 
 typedef struct s_simulation_data
 {
@@ -53,12 +55,12 @@ typedef struct s_philosoph
 	t_simulation_data	simulation_data;
 }						t_philosoph;
 
-typedef struct s_children_pids
+typedef struct s_sema_watcher
 {
 	int			*pids;
-	int			current_pid_i;
-	pthread_t	checker_pthread;
-}		t_children_pids;
+	sem_t		*sem;
+	pthread_t	thread;
+}			t_sema_watcher;
 
 
 // utils
@@ -66,10 +68,10 @@ int		ft_atoi(const char *nptr);
 long	get_program_time(void);
 
 // Error managment
-void	exit_error(t_children_pids **children_data);
+void	exit_error(void);
 
 // philosophers life
-void	check_dead(t_philosoph *philosoph);
+char	check_dead(t_philosoph *philosoph);
 void	check_end(t_philosoph *philosoph);
 void	check_eat(t_philosoph *philosoph);
 void	check_sleep(t_philosoph *philosoph);
@@ -79,7 +81,7 @@ void	print_fork_taken(t_philosoph *philosoph, long time);
 void	start_philosopher_process(t_philosoph philosoph);
 
 // multi-process managment
-int		*init_philosophers(t_simulation_data data, t_children_pids **children_data);
+int		*init_philosophers(t_simulation_data data);
 void	wait_process_finish(void);
 void	wait_available_forks(t_philosoph *philosoph);
 void	put_forks_back(t_philosoph *philosoph);

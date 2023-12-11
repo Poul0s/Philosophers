@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/10 18:10:55 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/11 13:03:57 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC			=	main.c \
 				philosopher/check_state.c \
 				philosopher/forks_manager.c \
 				philosopher/init.c \
-				philosopher/kill_process.c \
+				philosopher/kill_philosophers.c \
 				philosopher/philo_life.c \
 				philosopher/print_state.c \
 
