@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:15:10 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/11 13:44:45 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:50:46 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_sema_watcher
 	sem_t		*sem;
 	pthread_t	thread;
 }			t_sema_watcher;
-
 
 // utils
 int		ft_atoi(const char *nptr);

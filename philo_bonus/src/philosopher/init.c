@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 11:37:19 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/11 12:42:11 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:51:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static int	born_philosoph(t_philosoph philosoph)
 
 int	*init_philosophers(t_simulation_data data)
 {
-	int	*pids;
-	int	i;
+	int			*pids;
+	int			i;
 	t_philosoph	philosoph;
 
 	philosoph.simulation_data = data;

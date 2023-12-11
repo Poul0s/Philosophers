@@ -1,1 +1,0 @@
-todo : add thinking action for each philo that cant eat at first round

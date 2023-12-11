@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:51:29 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/11 13:06:12 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/11 13:51:21 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*take_forks(void *data)
 {
-	t_philosoph *philosoph;
+	t_philosoph	*philosoph;
 	sem_t		*sem;
 	char		i;
 
