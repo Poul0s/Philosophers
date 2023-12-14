@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:34:28 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/10 17:33:38 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/14 15:10:29 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	print_state(t_philosoph *philosoph, long time)
 			printf("%ld %d is sleeping\n", time, philosoph->id);
 		else
 			printf("%ld %d is thinking\n", time, philosoph->id);
+		sem_post(sem);
+		sem_close(sem);
 	}
-	sem_post(sem);
-	sem_close(sem);
 }
 
 void	print_fork_taken(t_philosoph *philosoph, long time)
