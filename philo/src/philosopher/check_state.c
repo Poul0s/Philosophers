@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   chek_state.c                                       :+:      :+:    :+:   */
+/*   check_state.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:27:05 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/07 15:28:55 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/14 15:16:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	check_dead(t_philosoph *philosoph)
 	last_meal_date = philosoph->last_meal_date;
 	die_time = philosoph->simulation->die_time;
 	if (last_meal_date + die_time < current_time)
-	{
-		set_simulation_state(philosoph->simulation, false);
 		print_state(philosoph, current_time);
-	}
 }
 
 void	check_end(t_philosoph *philosoph)
