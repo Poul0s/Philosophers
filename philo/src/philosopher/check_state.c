@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:27:05 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/14 15:16:52 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/14 16:51:21 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	check_end(t_philosoph *philosoph)
 
 	if (philosoph->simulation->nb_meal == -1)
 		return ;
+	pthread_mutex_lock(&philosoph->simulation->mutex);
 	all_philosoph_eaten = true;
 	current = philosoph;
 	while (current)
@@ -46,7 +47,8 @@ void	check_end(t_philosoph *philosoph)
 			current = NULL;
 	}
 	if (all_philosoph_eaten)
-		set_simulation_state(philosoph->simulation, false);
+		philosoph->simulation->active = false;
+	pthread_mutex_unlock(&philosoph->simulation->mutex);
 }
 
 void	check_eat(t_philosoph *philosoph)
@@ -60,7 +62,9 @@ void	check_eat(t_philosoph *philosoph)
 	{
 		philosoph->state = sleeping;
 		philosoph->state_date = current_time;
+		pthread_mutex_lock(&data->mutex);
 		philosoph->number_meal++;
+		pthread_mutex_unlock(&data->mutex);
 		print_state(philosoph, current_time);
 		release_forks(philosoph->id - 1, philosoph->simulation);
 		check_end(philosoph);
