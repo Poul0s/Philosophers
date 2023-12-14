@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:34:28 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/14 15:16:39 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/14 15:19:00 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_state(t_philosoph *philosoph, long time)
 {
 	pthread_mutex_lock(&philosoph->simulation->mutex);
-	if (philosoph->simulation->active) // todo fix doesnt show if simul active
+	if (philosoph->simulation->active)
 	{
 		if (philosoph->last_meal_date + philosoph->simulation->die_time < time)
 		{
