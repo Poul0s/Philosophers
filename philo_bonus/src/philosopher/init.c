@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 11:37:19 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/11 13:51:45 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/22 18:15:55 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	*init_philosophers(t_simulation_data data)
 
 	philosoph.simulation_data = data;
 	pids = malloc((data.nb_philosophers + 1) * sizeof(int));
-	pids[data.nb_philosophers] = 0;
 	if (pids == NULL)
 		exit_error();
+	pids[data.nb_philosophers] = 0;
 	i = 0;
 	while (i < data.nb_philosophers)
 	{
