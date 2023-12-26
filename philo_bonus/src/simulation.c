@@ -6,13 +6,13 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:46:50 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/26 18:35:02 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/26 18:47:45 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static void init_semaphore(const char *sem_name, int default_value)
+static void	init_semaphore(const char *sem_name, int default_value)
 {
 	sem_t	*sem;
 
