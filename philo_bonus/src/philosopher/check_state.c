@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:27:05 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/11 13:45:00 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/26 17:27:13 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,21 @@ void	check_sleep(t_philosoph *philosoph)
 
 void	check_think(t_philosoph *philosoph)
 {
+	sem_t	*sem;
 	long	current_time;
 
+	sem = sem_open(SEMA_PRINT, O_RDWR);
+	sem_wait(sem);
 	if (philosoph->number_forks == 2)
 	{
 		current_time = get_program_time();
 		philosoph->state = eating;
 		philosoph->state_date = current_time;
 		philosoph->last_meal_date = current_time;
+		sem_post(sem);
 		print_state(philosoph, current_time);
 	}
+	else
+		sem_post(sem);
+	sem_close(sem);
 }

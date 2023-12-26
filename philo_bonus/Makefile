@@ -6,7 +6,7 @@
 #    By: psalame <psalame@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 18:37:48 by psalame           #+#    #+#              #
-#    Updated: 2023/12/11 16:02:22 by psalame          ###   ########.fr        #
+#    Updated: 2023/12/26 18:35:13 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,12 @@
 
 CC			= cc
 
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 
 SRC			=	main.c \
 				error.c \
 				simulation.c \
+				waiters.c \
 				utils/ft_atoi.c \
 				utils/time.c \
 				philosopher/check_state.c \

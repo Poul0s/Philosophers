@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 17:15:10 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/11 13:50:46 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/26 18:46:09 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define SEMA_PRINT "philo_print"
 # define SEMA_DIED "philo_died"
 # define SEMA_EATEN "philo_eaten"
+# define SEMA_PIDS "philo_pids"
 
 typedef struct s_simulation_data
 {
@@ -86,5 +87,8 @@ void	wait_available_forks(t_philosoph *philosoph);
 void	put_forks_back(t_philosoph *philosoph);
 void	start_simulation(t_simulation_data data);
 void	kill_philosophers(int *pids);
+void	*wait_any_philo_died(void *data);
+void	*wait_all_philo_ate(void *data);
+void	*wait_all_process_finish(void *data);
 
 #endif

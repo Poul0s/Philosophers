@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:51:29 by psalame           #+#    #+#             */
-/*   Updated: 2023/12/11 13:51:21 by psalame          ###   ########.fr       */
+/*   Updated: 2023/12/26 17:23:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,25 @@
 void	*take_forks(void *data)
 {
 	t_philosoph	*philosoph;
-	sem_t		*sem;
+	sem_t		*sem_fork;
+	sem_t		*sem_var;
 	char		i;
 
 	philosoph = data;
 	i = 0;
-	sem = sem_open(SEMA_FORKS, O_RDWR);
+	sem_fork = sem_open(SEMA_FORKS, O_RDWR);
+	sem_var = sem_open(SEMA_PRINT, O_RDWR);
 	while (i < 2)
 	{
-		sem_wait(sem);
+		sem_wait(sem_fork);
+		sem_wait(sem_var);
 		philosoph->number_forks++;
+		sem_post(sem_var);
 		print_fork_taken(philosoph, get_program_time());
 		i++;
 	}
-	sem_close(sem);
+	sem_close(sem_fork);
+	sem_close(sem_var);
 	return (NULL);
 }
 
